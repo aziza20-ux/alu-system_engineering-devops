@@ -1,27 +1,19 @@
-#!/usr/bin/env bash
+!#/usr/bin/env bash
 #the installation of ngix
 
-# Update package list
-apt-get update -y
+# Update and install Nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
-# Install nginx
-apt-get install -y nginx
+# Configure Nginx to listen on port 80
+sudo sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+sudo sed -i 's/listen \[::\]:80 default_server;/listen [::]:80;/g' /etc/nginx/sites-available/default
 
-# Configure nginx to listen on port 80
-sed -i 's/listen \[::\]\+:80 default_server;/listen 80 default_server;/' /etc/nginx/sites-available/default
-sed -i 's/listen [0-9]\+:80 default_server;/listen 80 default_server;/' /etc/nginx/sites-available/default
-sed -i 's/listen 80 default_server;/listen 80 default_server;/' /etc/nginx/sites-available/default #ensure the port is exactly 80.
+# Create a custom index.html file with "Holberton School"
+echo "Holberton School" | sudo tee /var/www/html/index.html > /dev/null
 
-# Create a simple HTML page with "Holberton School"
-echo "<html><body>Holberton School</body></html>" > /var/www/html/index.html
+# Restart Nginx without using systemctl
+sudo service nginx restart
 
-# Restart nginx (without systemctl)
-nginx -s reload
-
-# Verify nginx is running and serving the correct content
-if curl -s http://127.0.0.1/ | grep -q "Holberton School"; then
-  echo "Nginx configured successfully."
-else
-  echo "Nginx configuration failed."
-  exit 1
-fi
+# Verify Nginx is running and serving the correct content
+curl http://localhost/
