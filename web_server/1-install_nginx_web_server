@@ -5,5 +5,7 @@
 # using curl, it must return a page that contains the string Hello World!
 apt-get update
 apt-get install -y nginx
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
-service nginx restart
+sed -i 's/listen \[::\]\+ default_server;/listen 80 default_server;/' /etc/nginx/sites-available/default
+sed -i 's/listen \([0-9]\+\) default_server;/listen 80 default_server;/' /etc/nginx/sites-available/default
+echo "<html><body>Holberton School</body></html>" > /var/www/html/index.html
+nginx -s reload
