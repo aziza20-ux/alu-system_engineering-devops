@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#the installation of ngix
 
 # Update package list
 apt-get update -y
