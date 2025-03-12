@@ -1,4 +1,4 @@
-!#/usr/bin/env bash
+#!/usr/bin/env bash
 #the installation of ngix
 
 # Update and install Nginx
