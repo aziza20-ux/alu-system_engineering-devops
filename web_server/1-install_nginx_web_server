@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Update package list
 apt-get update -y
@@ -18,7 +18,7 @@ echo "<html><body>Holberton School</body></html>" > /var/www/html/index.html
 nginx -s reload
 
 # Verify nginx is running and serving the correct content
-if curl -s http://localhost/ | grep -q "Holberton School"; then
+if curl -s http://127.0.0.1/ | grep -q "Holberton School"; then
   echo "Nginx configured successfully."
 else
   echo "Nginx configuration failed."
