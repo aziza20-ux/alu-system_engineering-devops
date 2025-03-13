@@ -1,22 +1,32 @@
 #!/usr/bin/env bash
-#Configure your Nginx server to have a custom 404 page that contains the string Ceci n'est pas une page.
-
-STRING="Hello World!"
-
-REDIRECT="\n\tlocation /redirect_me {\n\t\treturn 301 https://youtu.be/dQw4w9WgXcQ;\n\t}\n"
-FILE="/etc/nginx/sites-available/default"
-
-ERRORFILE="/usr/share/nginx/html/404error.html"
-FOUR="Ceci n'est pas une page"
-ERRORREDIRECT="\n\terror_page 404 /404error.html;\n\tlocation = /404error.html {\n\t\troot /usr/share/nginx/html;\n\t\tinternal;\n\t}\n"
-
+#Updates the current state of the server
+#Installs Nginx on the server
+#Changes the user and user group ownership for editing file
+#overwrites the default page of nginx
+#overwrites the default configuration file default
+#add a redirection and a location for the redirection
+#restarts nginx
 apt-get -y update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-sudo echo "$STRING" > /var/www/html/index.nginx-debian.html
-sed -i "37i\ $REDIRECT" "$FILE"
-
-echo "$FOUR" > "$ERRORFILE"
-sed -i "37i\ $ERRORREDIRECT" "$FILE"
-
-service nginx restart
+apt-get install -y nginx
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chown -R "$USER":"$USER" /etc/nginx/sites-available/default
+echo "Holberton School for the win!" > /var/www/html/index.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+echo "server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html;
+	index index.html index.htm 404.html index.nginx-debian.html;
+	server_name _;
+	location /redirect_me {
+		return 301 https://www.youtube.com/watch?v=-VGIt10m9VQ;
+	}
+	location /xyz {
+		return 404;
+	}
+	error_page 404 /404.html;
+}" > /etc/nginx/sites-available/default
+sudo chown -R root:root /var/www/html
+sudo chown -R root:root /etc/nginx/sites-available/default
+sudo service nginx restart
+sudo service nginx reload
