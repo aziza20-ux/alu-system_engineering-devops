@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 #Install nginx on your web-01 server
 
-apt-get update -y
+#!/usr/bin/env bash
+# Installs nginx web server and configures it to serve a page containing "Holberton School"
 
-# Install Nginx and echo a confirmation message
-apt-get install -y nginx 2>&1 | grep -q "nginx" && echo "nginx installed"
+# Update package lists and install nginx
+apt-get update
+apt-get install -y nginx
 
-# Configure Nginx to listen on port 80 (if not already)
-if ! grep -q "listen 80;" /etc/nginx/sites-available/default; then
-    sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
-    sed -i 's/listen \[::\]:80 default_server;/listen \[::\]:80;/' /etc/nginx/sites-available/default
-fi
+# Make sure nginx is running
+service nginx start
 
-# Set the desired content for the root page and echo a confirmation message
-echo "Holberton School" > /var/www/html/index.html && echo "Holberton School written to index.html"
+# Configure nginx to listen on port 80 (default)
+# Create the html page with the required content
+echo "Holberton School" > /var/www/html/index.nginx-debian.html
 
-# Restart Nginx without systemctl
-/etc/init.d/nginx restart
+# Ensure nginx configuration is applied
+service nginx restart
