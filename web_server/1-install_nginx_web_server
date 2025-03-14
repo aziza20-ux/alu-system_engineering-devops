@@ -3,8 +3,8 @@
 
 apt-get update -y
 
-# Install Nginx
-apt-get install -y nginx
+# Install Nginx and echo a confirmation message
+apt-get install -y nginx 2>&1 | grep -q "nginx" && echo "nginx installed"
 
 # Configure Nginx to listen on port 80 (if not already)
 if ! grep -q "listen 80;" /etc/nginx/sites-available/default; then
@@ -12,8 +12,8 @@ if ! grep -q "listen 80;" /etc/nginx/sites-available/default; then
     sed -i 's/listen \[::\]:80 default_server;/listen \[::\]:80;/' /etc/nginx/sites-available/default
 fi
 
-# Set the desired content for the root page
-echo "Holberton School" > /var/www/html/index.html
+# Set the desired content for the root page and echo a confirmation message
+echo "Holberton School" > /var/www/html/index.html && echo "Holberton School written to index.html"
 
 # Restart Nginx without systemctl
 /etc/init.d/nginx restart
