@@ -1,1 +1,1 @@
-the debugging of config file 
+the project is all about debugging
